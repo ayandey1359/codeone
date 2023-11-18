@@ -1,0 +1,146 @@
+---
+title: "SQL | R connect | Data Analyse"
+author: "Ayan"
+date: "`r Sys.Date()`"
+output: html_document
+---
+# SQL | R project 
+###### In this project I will work on database by **SQL** in R enviroment.
+
+* step 1 - firstly i will import a dataset( superstore dataset). 
+* step 2 - then by using R i will break that dataset into four table.
+* step 3 - the i will upload all the dataset in SQL server. and creat link with all of them .
+* step 4- then by using SQL  i will analyse the data set and solve quetions.
+
+# Lets Start.
+```{r}
+# get to know about the current directory 
+getwd()
+```
+```{r}
+# import library
+library(tidyverse)
+```
+```{r}
+#let import the dataset
+data1 <- read.csv("superstore.csv") # the file present in this same directory
+```
+```{r}
+# let see the dataet
+View(data1)
+```
+```{r}
+# let some minor cleaning on the variable name them i will jump into SQL part
+# Rename sub.Category varriable name into Sub_Category
+data1 <-data1 %>% rename(sub_category=Sub.Category)
+```
+```{r}
+# let rename all the variable name to smaller case
+names(data1) <- tolower(names(data1))
+```
+
+```{r}
+# now remove all the duplicate obs. and make data clean
+data1<-data1[!duplicated(data1), ]
+```
+```{r}
+View(data1)
+```
+
+##### ok now the dataset is fine, i do skip the entire cleaning proceess because
+for now my main motive is to work in the **SQL**. so for now tiime being I stay all the null values there .
+
+##### Lets creat some table for database;
+```{r}
+superstore <- data.frame(c(data1[1:5])) # table 1
+```
+```{r}
+customers <- data.frame(c(data1[1],data1[6:13])) # table 2
+```
+```{r}
+products <- data.frame(c(data1[1],data1[14:17])) # table 3
+```
+```{r}
+sales <- data.frame(c(data1[1],data1[18:21])) # table 4
+```
+##### Let watch all the tables with a small no of observation 
+```{r}
+head(superstore) # table 1
+```
+```{r}
+head(customers) # table 2
+```
+```{r}
+head(products) # table 3
+```
+```{r}
+head(sales) # table 4
+```
+ ##### now though all the row_id is unique that's why i will make it as a 
+ ** primary key**
+```{r}
+# let save all those table in my SQL directory and load it in database
+write.csv(superstore,"C:\\Users\\growth\\Desktop\\SQL project\\superstore.csv")
+write.csv(customers,"C:\\Users\\growth\\Desktop\\SQL project\\customers.csv")
+write.csv(products,"C:\\Users\\growth\\Desktop\\SQL project\\products.csv")
+write.csv(sales,"C:\\Users\\growth\\Desktop\\SQL project\\sales.csv")
+```
+# SQL | R    --
+* Now before began  to connect with MySQL database.I am going to terminal and load all the dataset and and connect them by relation with keys. and all the SQL code
+are here [sql.com](link).
+
+* Before upload the database I have to clean all the dataset. To over come errors
+and wrong result. this time I will use the LibreOffice Calc. and all the process
+I will showcase by a Video link is here. [ libreoffice.sql](link)
+  -- And all the change log are documented is here [ nextcloud.calc ](link)
+  
+  --------------------------------------------------------------------------
+                              *png
+  --------------------------------------------------------------------------
+  
+  
+  ##### let connect R with SQL server 
+```{r warning=FALSE}
+# let import all the essential libraries
+library(RODBC)
+library(DBI)
+library(odbc)
+```
+
+```{r}
+# now connect with the database - MySQL
+conn <- odbcConnect("mysql")
+```
+
+```{r warning=FALSE}
+# let see the connection dsn details
+print(conn)
+```
+```{r}
+# metadata details
+conn_info <- odbcGetInfo(conn)
+conn_info
+```
+# let retrive the sales data and do analyse it 
+```{r}
+# retrive the data from data base and store it in a variable
+sales<- sqlQuery(conn,'select * from sales')
+
+```
+```{r}
+# let view that data set in tidy manner
+# View(sales)
+head(sales)
+```
+```{r}
+# let overlook the dataset , and understand how the sales vector distribute
+summary(sales$sales)
+```
+by observing this summary its understood that the mean and median values large apart , there may stay many outliers
+```{r}
+# let see by histogram
+hist(sales$sales)
+```
+
+
+
