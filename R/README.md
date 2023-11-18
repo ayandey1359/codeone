@@ -32,8 +32,8 @@ after that . i made connection with database and R studio. and start the journey
 
 ###### Important link : 
 in this repository one file name is Project3.Rmd : which is the main file ( raw ) , which is the 1st part of this project. 
-though it is (.Rmd) file so it's may difficult to understand. so i deploy a GitHub to understand all  the steps clearly. 
-here is the link :"""""""""""""""""""
+though it is (.Rmd) file so it's may difficult to understand. so i deploy a GitHub page to understand all  the steps clearly. 
+here is the [link](https://ayandey1359.github.io/Project3/)
 and though this project 
  ###### MySQL Extension : 
 though this project is not limited in just one single file, because this project have both R + SQL. 
