@@ -13,4 +13,9 @@ in this project my primary focus to clean the data and make me to consistent .
 
 
 # Project 2 :
-In 
+In this project I took the same dataset superstore sales data.and do the complete data analysis in the R studio. and in this repository i and in project 2 file i uploaded the raw file ( .Rmd ) .
+because it is raw file it may difficult to understand. so I made a HTML file and deploy it by GitHub page.  here is the link """"""""""""""""" . 
+
+
+# project 3 : 
+in this project i took the same dataset. but here i applied some my own concept and did it.  
