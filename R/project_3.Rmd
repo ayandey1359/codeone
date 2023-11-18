@@ -87,28 +87,24 @@ write.csv(sales,"C:\\Users\\growth\\Desktop\\SQL project\\sales.csv")
 ```
 # SQL | R    --
 * Now before began  to connect with MySQL database.I am going to terminal and load all the dataset and and connect them by relation with keys. and all the SQL code
-are here [https://github.com/ayandey1359/portfolio/blob/main/SQL/SQL_R_ExtensionScript.sql](link).
+are here [sql.com](link).
 
+* Before upload the database I have to clean all the dataset. To over come errors
+and wrong result. this time I will use the LibreOffice Calc. and all the process
+I will showcase by a Video link is here. [ libreoffice.sql](link)
+  -- And all the change log are documented is here [ nextcloud.calc ](link)
+  
+  --------------------------------------------------------------------------
+                              *png
+  --------------------------------------------------------------------------
+  
+  
   ##### let connect R with SQL server 
 ```{r warning=FALSE}
 # let import all the essential libraries
 library(RODBC)
 library(DBI)
 library(odbc)
-```
-
-
-```{r}
-head(sqlQuery(conn,'select * from sales'))
-```
-```{r}
-dsns <- odbcDataSources()
-```
-```{r}
-names(dsns)
-```
-```{r}
-print(dsns["mysql"])
 ```
 
 ```{r}
@@ -122,20 +118,29 @@ print(conn)
 ```
 ```{r}
 # metadata details
-conn.info <- odbcGetInfo(conn)
-conn.info
+conn_info <- odbcGetInfo(conn)
+conn_info
 ```
+# let retrive the sales data and do analyse it 
 ```{r}
-# get sql details
-sql.info <- sqlTypeInfo(conn)
-sql.info
-```
-```{r}
-print(sql.info[c(1,3)],row.names = FALSE)
-```
-
-```{r}
+# retrive the data from data base and store it in a variable
+sales<- sqlQuery(conn,'select * from sales')
 
 ```
+```{r}
+# let view that data set in tidy manner
+# View(sales)
+head(sales)
+```
+```{r}
+# let overlook the dataset , and understand how the sales vector distribute
+summary(sales$sales)
+```
+by observing this summary its understood that the mean and median values large apart , there may stay many outliers
+```{r}
+# let see by histogram
+hist(sales$sales)
+```
+
 
 
