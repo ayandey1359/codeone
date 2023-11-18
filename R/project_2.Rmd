@@ -1,456 +1,146 @@
 ---
-title: "Superstore Data Analysis"
-author: "Ayan Dey"
-Date: "2023-10-24"
+title: "SQL | R connect | Data Analyse"
+author: "Ayan"
+date: "`r Sys.Date()`"
 output: html_document
 ---
+# SQL | R project 
+###### In this project I will work on database by **SQL** in R enviroment.
 
-```{r setup, include=FALSE,warning=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+* step 1 - firstly i will import a dataset( superstore dataset). 
+* step 2 - then by using R i will break that dataset into four table.
+* step 3 - the i will upload all the dataset in SQL server. and creat link with all of them .
+* step 4- then by using SQL  i will analyse the data set and solve quetions.
 
-# Superstore Data Analysis
-
-Today I am going to work on Superstore data set. Analyse the data by \*\*R\*\* and get some useful insights about the data.
-
-firstly set up the working directory
-
+# Lets Start.
 ```{r}
-# to see the current working directory
+# get to know about the current directory 
 getwd()
 ```
-
-```{r warning= TRUE}
-# set up the working directory
-setwd("C:\\Users\\growth\\Desktop\\R project")
-```
-
 ```{r}
-# confirmation of working directory
-getwd()
-```
-
-```{r}
-# importing all the  libraaries what I need the most 
- 
+# import library
 library(tidyverse)
-library(skimr)
-
-```
-
-```{r}
-# importing the data -- I will always take the master dataset in variable = ** x **
-x <- read.csv("superstore.csv")
-x %>% head(7)
-```
-
-## Explore Understand and Clean the data
-
-```{r}
-# see the dimenstion of the dataset
-dim(x)
-```
-
-Number of observation is : 9996
-
-Number of variable is : 22
-
-```{r}
-# let see all the names of the 22 variables 
-names(x)
 ```
 ```{r}
-head(x$sub.category)
+#let import the dataset
+data1 <- read.csv("superstore.csv") # the file present in this same directory
 ```
-
-
 ```{r}
-# Rename sub.Category variable name into Sub_Category
-x <-x %>% rename(sub_category=sub.category)
-
+# let see the dataet
+View(data1)
 ```
-
 ```{r}
-# confirmation
-names(x)
+# let some minor cleaning on the variable name them i will jump into SQL part
+# Rename sub.Category varriable name into Sub_Category
+data1 <-data1 %>% rename(sub_category=Sub.Category)
 ```
-
 ```{r}
 # let rename all the variable name to smaller case
-names(x) <- tolower(names(x))
-```
-
-```{r}
-# confirmation
-names(x)
-```
-
-```{r}
-# let see the structure and datatype of variables of data
-glimpse(x)
-```
-
-now work with each variable
-
-```{r}
-# change datatype of order_date variable datatype into - date datatype
-x$order_date<- as.Date(x$order_date)
-```
-
-```{r}
-# confirmation
-class(x$order_date)
-```
-
-```{r}
-# change datatype of ship_date variable datatype into - date datatype
-x$ship_date<- as.Date(x$ship_date)
-```
-
-```{r}
-# confirmation
-class(x$ship_date)
-```
-
-```{r}
-# change datatype of ship_mode variable datatype into factor datatype
-x$ship_mode<- as.factor(x$ship_mode)
-```
-
-```{r}
-# confirmation
-class(x$ship_mode)
-```
-
-```{r}
-# change datatype of sales variable datatype into - Numeric datatype
-x$sales<- as.numeric(x$sales)
-```
-
-NULL value introduced in sales vector
-
-```{r}
-# let ignore the NULL value for now and do the pending operation
-x$sales<- as.numeric(x$sales,na.rm=TRUE)
-```
-
-```{r}
-# confirmation
-class(x$sales)
-```
-
-```{r}
-# let see again the structure of the data
-glimpse(x)
-```
-
--   there are a x variable which make me dought so let work on it
-
-    ```{r}
-    # let see the total length of x variable
-    length(x$x)
-    ```
-
-```{r}
-# there have total 9996 obs. 
-# let see how many NULL value are there
-sum(is.na(x$x))
-```
-
-```{r}
-# let see how much data hoding that variable
-sum( ! is.na(x$x))
-```
-
-total 9996 values and 9990 NULL
-
-total 6 values are there
-
-```{r}
-# let locate those values
-which( ! is.na(x$x))
-```
-
-```{r}
-# let see all those obs. and those values understand importancy
-x[ which (!is.na(x$x)), ] 
-```
-
-**conclusion** : I can't just drop the x variable becaue it hold number 6 values
-
-but those values are unidentified and very confusion , what the values belongs to
-
-after confirmation I decided to drop this variable.
-
-```{r}
-# now let locate the variable
-which(names(x)== "x")
-```
-
-```{r}
-# let remove that  by creating another variable ( Y)
-y<-x[ , -22]
-```
-
-```{r}
-# confirmation
-names(y)
-```
-
-now working variable will be : [**y**]{.underline}
-
-```{r}
-print(" The new dimension is: " )
-dim(y)
-```
-
-```{r}
-# final confirmation 
-glimpse(y)
-```
-
-all variable name , data type are set
-
-now its time to deep dive inside the data
-
-## NULL values
-
-```{r}
-# let check NULL values of each variable
-# y <- working data
-for ( i in 1:ncol(y)){
-    print(paste(" null value of ",names(x[i]),"Obs. ", " index: ",i ))
-     print(sum(is.na(y[i])) )
-        }
-```
-
-let see each variable which have NULL values
-
-```{r}
-# let see all those data with max null
-y[ , c(1:5)] %>% head(7)
-```
-
-```{r}
-# let see with out order_date and ship_date
-head(y[ , -c(3:4)])
-```
-
-It understood that this two column don't have much value right now to analysis , so I decided to drop this two columns .
-
--But also there have null in quantity(1), sales(6), discount(6) and profit ( 1) ,but I should not remove all those rows and just ignore when analysis.
-
-```{r}
-# let store the data without order_date and ship_date
-y<- y[ , -c(3:4)]
-```
-
-```{r}
-head(y)
-```
-
-#### Duplicates
-
-```{r}
-# just over view the boolean matrix 
-# duplicated(x)
-```
-
-```{r}
-# retrive all duplicate obs.
-z<-y[duplicated(y), ]
-```
-
-```{r}
-# let see the duplicate values
-z
-write.csv(z,"see_in_LibreOffice.csv")
+names(data1) <- tolower(names(data1))
 ```
 
 ```{r}
 # now remove all the duplicate obs. and make data clean
-y<-y[!duplicated(y), ]
-head(y)
+data1<-data1[!duplicated(data1), ]
+```
+```{r}
+View(data1)
 ```
 
-#### Now the data is cleaned and ready to save and Analysis**
+##### ok now the dataset is fine, i do skip the entire cleaning proceess because
+for now my main motive is to work in the **SQL**. so for now tiime being I stay all the null values there .
 
+##### Lets creat some table for database;
 ```{r}
-# now save the cleaned file 
-# write.csv(y,"superstore_cleaned.csv")
+superstore <- data.frame(c(data1[1:5])) # table 1
 ```
-
-## Analyse
-
 ```{r}
-glimpse(y)
+customers <- data.frame(c(data1[1],data1[6:13])) # table 2
 ```
-
-now I will work with each categorical vectors
-
-##### Let Analyse the segment vector
-
 ```{r}
-# to see the repeating factor values are in the ship_mode 
-sort(table(y$ship_mode),decreasing = TRUE)
+products <- data.frame(c(data1[1],data1[14:17])) # table 3
 ```
-
 ```{r}
-# let see by graph
-barplot(sort(table(y$ship_mode)))
+sales <- data.frame(c(data1[1],data1[18:21])) # table 4
 ```
-
-##### Analyse the ship_mode vector with respect to quantity values
-
+##### Let watch all the tables with a small no of observation 
 ```{r}
-
-#  for(i in 1 : nrow(y) ){
-#   ifelse(y$ship_mode == 'Second Class', sum1[ , ]<-sum(y$quantity[i, ]),1*1 ) 
-#     sum1= count(y$quantity[i, ])}
-# }
-# print(sum1) 
+head(superstore) # table 1
 ```
-
-pull the ship_mode factore w.r.t frequency of quantity
-
 ```{r}
-# pull with frequency with First class
-ship_mode_result<- y %>%
-  select(ship_mode,quantity) %>% 
-  filter(ship_mode == "First Class")
-m<-sum(ship_mode_result$quantity)
-m
+head(customers) # table 2
 ```
-
 ```{r}
-# pull with frequency with Secound class
-
-ship_mode_result<- y %>%
-  select(ship_mode,quantity) %>% 
-  filter(ship_mode == "Second Class")
-n<-sum(ship_mode_result$quantity)
-n
+head(products) # table 3
 ```
-
 ```{r}
-# pull with frequency with Standard class
+head(sales) # table 4
+```
+ ##### now though all the row_id is unique that's why i will make it as a 
+ ** primary key**
+```{r}
+# let save all those table in my SQL directory and load it in database
+write.csv(superstore,"C:\\Users\\growth\\Desktop\\SQL project\\superstore.csv")
+write.csv(customers,"C:\\Users\\growth\\Desktop\\SQL project\\customers.csv")
+write.csv(products,"C:\\Users\\growth\\Desktop\\SQL project\\products.csv")
+write.csv(sales,"C:\\Users\\growth\\Desktop\\SQL project\\sales.csv")
+```
+# SQL | R    --
+* Now before began  to connect with MySQL database.I am going to terminal and load all the dataset and and connect them by relation with keys. and all the SQL code
+are here [sql.com](link).
 
-ship_mode_result<- y %>%
-  select(ship_mode,quantity) %>% 
-  filter(ship_mode == "Standard Class")
-o<-sum(ship_mode_result$quantity,na.rm=TRUE)
-o
+* Before upload the database I have to clean all the dataset. To over come errors
+and wrong result. this time I will use the LibreOffice Calc. and all the process
+I will showcase by a Video link is here. [ libreoffice.sql](link)
+  -- And all the change log are documented is here [ nextcloud.calc ](link)
+  
+  --------------------------------------------------------------------------
+                              *png
+  --------------------------------------------------------------------------
+  
+  
+  ##### let connect R with SQL server 
+```{r warning=FALSE}
+# let import all the essential libraries
+library(RODBC)
+library(DBI)
+library(odbc)
 ```
 
 ```{r}
-# pull with frequency with Same Day
-
-ship_mode_result<- y %>%
-  select(ship_mode,quantity) %>% 
-  filter(ship_mode == "Same Day")
-p<-sum(ship_mode_result$quantity,na.rm=TRUE)
-p
+# now connect with the database - MySQL
+conn <- odbcConnect("mysql")
 ```
 
+```{r warning=FALSE}
+# let see the connection dsn details
+print(conn)
+```
 ```{r}
-# let create a data frame of ship_mode for deep analyse
-ship_class <-c ("First Class","Second Class","Standard Class","Same Day")
-quantity <- c(m,n,o,p)
-ship_mode_result <- data.frame( ship_class , quantity )
+# metadata details
+conn_info <- odbcGetInfo(conn)
+conn_info
 ```
-
+# let retrive the sales data and do analyse it 
 ```{r}
-# showing values
-ship_mode_result
-```
+# retrive the data from data base and store it in a variable
+sales<- sqlQuery(conn,'select * from sales')
 
+```
 ```{r}
-# let create a pie chart to understand 
-p<- c(ship_mode_result$quantity)
-labels <- c(ship_mode_result$ship_class)
-pie(p,labels,main="ship mode of each class", col= rainbow(length(x)))
+# let view that data set in tidy manner
+# View(sales)
+head(sales)
 ```
-
-Let Analyse category vector
-
 ```{r}
-# let see the frequency
-table(y$category)
+# let overlook the dataset , and understand how the sales vector distribute
+summary(sales$sales)
 ```
-
+by observing this summary its understood that the mean and median values large apart , there may stay many outliers
 ```{r}
-ggplot(data=y)+
-  geom_bar(mapping=aes(x=category),fill="blue",color="red")+
-  labs(title = "Frequency of category",
-       subtitle="this bar graph shows which type of category are ordered")
+# let see by histogram
+hist(sales$sales)
 ```
 
-### Now working with Numeric Data
-
-Let work with sales vector
-
-```{r}
-class(y$sales)
-```
-
-ok : ( data Type )
-
-```{r}
-# let see over view of the distribution of sales vector
-summary(y$sales)
-```
-
-```{r}
-boxplot(y$sales)
-```
-
-as I see max data are contain within 17.248 to 209.858 , also have many outliers ( shown in box plot) and some NULL (6) values. dense
-
-```{r}
-# let take the maximun dense data
-# And see the mean sales without outliers and NULL valuee 
-mean_sales <- y %>% select(sales) %>% drop_na(sales) %>% 
-  filter(sales >= 17.248 & sales <= 209.858)
-mean(mean_sales$sales)
-```
-
-now compare it with median, which can give very closely result.
-
--   mean = 229.63
-
--   mean with out NULL & outliers = [**72.13**]{.underline}
-
--   median = [**54.356**]{.underline}
-
-    **Time series**
-
-```{r}
-glimpse(x)
-```
-
-Let decide which variable is good option for Time series
-
-```{r}
-# let see at order_date variable
-print(paste("total lenth : ",length(x$order_date)))
-print(paste("total NULL values : ",sum(is.na(x$order_date))))
-```
-
-```{r}
-# let see at ship_date variable
-print(paste("total lenth : ",length(x$ship_date)))
-print(paste("total NULL values : ",sum(is.na(x$ship_date))))
-```
-
-ship_date (NULL 6097 ) \> order_date(NULL 5952)
-
-though there is no cancel order . it is good idea to work with order_date.
 
 
-#### Now do some Question Answer solve
-
-```{r}
-## which are the most selling product ?
-x1<-y %>% mutate('total_sales' =(sales*quantity)-(discount*quantity))
-x1 %>% arrange(-total_sales) %>% select(product_name) %>% head(10)
-```
