@@ -20,13 +20,22 @@ because it is raw file it may difficult to understand. so I made a HTML file and
 # project 3 : 
 Here i applied some my own concept and did it.in this project i took the same dataset ( superstore sales data, public access TRUE ). 
 
-* Here i took that data set firstly i cleaned the data. and seperate it into four dataset according by its characteristics. then store all the dataset in the database ,(I primarily use the MySQL or MariaDB and as a host I used DBeaver).
+* Here i took that data and seperate it into four dataset according by its characteristics. then store all the dataset in the database ,(I primarily use the MySQL or MariaDB and as a host I used DBeaver).
 
 * after completing all this steps.I install ODBC driver from MySQL community. and go to settings and granted permission of ODBC to ODBC driver. 
 
 * then come back to R studio install some necessary packages
-  1. ODBC package (make MySQL in R studio) 
+  1. ODBC package (connect database with R studio) 
   2. DBI package ( Sql environment, and run all command) 
 
 after that . i made connection with database and R studio. and start the journey of data analysis .
 
+###### Important link : 
+in this repository one file name is Project3.Rmd : which is the main file ( raw ) , which is the 1st part of this project. 
+though it is (.Rmd) file so it's may difficult to understand. so i deploy a GitHub to understand all  the steps clearly. 
+here is the link :"""""""""""""""""""
+and though this project 
+ ###### MySQL Extension : 
+though this project is not limited in just one single file, because this project have both R + SQL. 
+in the sql part I used MySQL to understand, clean ,make it consistent . 
+So the link of the sql script 
