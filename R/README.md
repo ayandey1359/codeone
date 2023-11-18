@@ -18,4 +18,15 @@ because it is raw file it may difficult to understand. so I made a HTML file and
 
 
 # project 3 : 
-in this project i took the same dataset. but here i applied some my own concept and did it.  
+Here i applied some my own concept and did it.in this project i took the same dataset ( superstore sales data, public access TRUE ). 
+
+* Here i took that data set firstly i cleaned the data. and seperate it into four dataset according by its characteristics. then store all the dataset in the database ,(I primarily use the MySQL or MariaDB and as a host I used DBeaver).
+
+* after completing all this steps.I install ODBC driver from MySQL community. and go to settings and granted permission of ODBC to ODBC driver. 
+
+* then come back to R studio install some necessary packages
+  1. ODBC package (make MySQL in R studio) 
+  2. DBI package ( Sql environment, and run all command) 
+
+after that . i made connection with database and R studio. and start the journey of data analysis .
+
