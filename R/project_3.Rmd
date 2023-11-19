@@ -139,7 +139,7 @@ conn_info <- odbcGetInfo(conn)
 conn_info
 ```
 
-# let retrive the sales data and do analyse it
+# let retrieve the sales data and do analyse it
 
 ```{r}
 # retrive the data from data base and store it in a variable
@@ -158,9 +158,41 @@ head(sales)
 summary(sales$sales)
 ```
 
-by observing this summary its understood that the mean and median values large apart , there may stay many outliers
+by observing this summary its understood that the mean and median values large apart , there may stay many outliers.
 
 ```{r}
 # let see by histogram
-hist(sales$sales)
+hist(sales$sales,main="Sales Vector Distribution",xlab="Sales       
+     Value",ylab="Frequency",col="blue",
+     border = "black")
 ```
+```{r}
+# though max values are present 0 to 2000 . let see those area 
+hist(sales$sales,main="Sales Vector Distribution",xlab="Sales       
+     Value",ylab="Frequency",xlim=c(0,2500),col="blue",
+     border = "black")
+```
+```{r}
+# let see by histogram
+hist(sales$sales,main="Sales Vector Distribution",xlab="Sales       
+     Value",ylab="Frequency",xlim=c(0,2000),col="blue",
+     border = "black",breaks=5)
+```
+```{r}
+# let see the data to understand 
+sales %>% select(sales) %>%  na.omit() %>% filter(sales<2000) # %>% View()
+```
+
+```{r}
+hist(sales$sales,main="Sales Vector Distribution",xlab="Sales       
+     Value",ylab="Frequency",xlim=c(0,2000),col="blue",
+     border = "black",breaks=500)
+```
+```{r}
+# let see the lower sales values by set of Y limit 
+hist(sales$sales,main="Sales Vector Distribution",xlab="Sales       
+     Value",ylab="Frequency",xlim=c(0,2000),ylim=c(0,100),col="blue",
+     border = "black",breaks=500)
+```
+conclusion : There is like avg 100 to 150 obs. which have max sales values.
+conclude by Histogram observation. thats why Mean and Median Value are far apart.
