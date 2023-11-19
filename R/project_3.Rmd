@@ -146,10 +146,12 @@ conn_info
 sales<- sqlQuery(conn,'select * from sales')
 
 ```
+
 ```{r}
 # let understand the datatype of sales table from database
 glimpse(sqlQuery(conn,'select * from sales'))
 ```
+
 ```{r}
 # let view that data set in tidy manner
 # View(sales)
@@ -169,18 +171,21 @@ hist(sales$sales,main="Sales Vector Distribution",xlab="Sales
      Value",ylab="Frequency",col="blue",
      border = "black")
 ```
+
 ```{r}
 # though max values are present 0 to 2000 . let see those area 
 hist(sales$sales,main="Sales Vector Distribution",xlab="Sales       
      Value",ylab="Frequency",xlim=c(0,2500),col="blue",
      border = "black")
 ```
+
 ```{r}
 # let see by histogram
 hist(sales$sales,main="Sales Vector Distribution",xlab="Sales       
      Value",ylab="Frequency",xlim=c(0,2000),col="blue",
      border = "black",breaks=5)
 ```
+
 ```{r}
 # let see the data to understand 
 sales %>% select(sales) %>%  na.omit() %>% filter(sales<2000) # %>% View()
@@ -191,35 +196,30 @@ hist(sales$sales,main="Sales Vector Distribution",xlab="Sales
      Value",ylab="Frequency",xlim=c(0,2000),col="blue",
      border = "black",breaks=500)
 ```
+
 ```{r}
 # let see the lower sales values by set of Y limit 
 hist(sales$sales,main="Sales Vector Distribution",xlab="Sales       
      Value",ylab="Frequency",xlim=c(0,2000),ylim=c(0,100),col="blue",
      border = "black",breaks=500)
 ```
-conclusion : There is like avg 100 to 150 obs. which have max sales values.
-conclude by Histogram observation. thats why Mean and Median Value are far apart.
-==================================================================================
 
-Let Answer some question :by SQL
+conclusion : There is like avg 100 to 150 obs. which have max sales values. conclude by Histogram observation. thats why Mean and Median Value are far apart. ==================================================================================
+
+[**Let Answer some question :by SQL**]{.underline}
 
 ```{r}
 # let see the customer table from database
 head(sqlQuery(conn,'select * from customers'))
 ```
+
 ```{r}
 # let understand the data type of customers table from database
 glimpse(sqlQuery(conn,'select * from customers'))
 ```
+Q1. Top 10 customers name according to sales value ?
 ```{r}
-#sqlQuery(conn,"select 8 from sales")
-```
-
-
-```{r}
-
-sqlQuery(conn,"SELECT index1, customer_name FROM customers WHERE index1 IN (SELECT index1 
-                                                      index1 FROM sales WHERE
-                                                      sales > 1000 ")
+# Top 10 customers according to sales values.
+sqlQuery(conn,"SELECT index1, customer_name FROM customers WHERE index1 IN (SELECT index1 index1 FROM sales WHERE sales > 1000 ORDER BY sales DESC) LIMIT 10")
 ```
 
