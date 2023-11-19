@@ -12,7 +12,7 @@ output: html_document
 -   step 1 - firstly i will import a dataset( superstore dataset).
 -   step 2 - then by using R i will break that dataset into four table.
 -   step 3 - the i will upload all the dataset in SQL server. and creat link with all of them .
--   step 4- then by using SQL i will analyse the data set and solve quetions.
+-   step 4- then by using SQL i will analyse the data set and solve questions.
 
 # Lets Start.
 
