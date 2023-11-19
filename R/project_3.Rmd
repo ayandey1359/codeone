@@ -146,7 +146,10 @@ conn_info
 sales<- sqlQuery(conn,'select * from sales')
 
 ```
-
+```{r}
+# let understand the datatype of sales table from database
+glimpse(sqlQuery(conn,'select * from sales'))
+```
 ```{r}
 # let view that data set in tidy manner
 # View(sales)
@@ -196,3 +199,27 @@ hist(sales$sales,main="Sales Vector Distribution",xlab="Sales
 ```
 conclusion : There is like avg 100 to 150 obs. which have max sales values.
 conclude by Histogram observation. thats why Mean and Median Value are far apart.
+==================================================================================
+
+Let Answer some question :by SQL
+
+```{r}
+# let see the customer table from database
+head(sqlQuery(conn,'select * from customers'))
+```
+```{r}
+# let understand the data type of customers table from database
+glimpse(sqlQuery(conn,'select * from customers'))
+```
+```{r}
+#sqlQuery(conn,"select 8 from sales")
+```
+
+
+```{r}
+
+sqlQuery(conn,"SELECT index1, customer_name FROM customers WHERE index1 IN (SELECT index1 
+                                                      index1 FROM sales WHERE
+                                                      sales > 1000 ")
+```
+
