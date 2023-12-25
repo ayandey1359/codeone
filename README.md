@@ -2,7 +2,7 @@
 
 ## Overview
 
-Welcome to my Data Analyst Portfolio! This repository of projects of data analysis.
+This is a super Store Data Analye project 
 
 ## Projects
 
